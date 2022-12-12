@@ -1,4 +1,4 @@
-package com.emlakcepte.model.enums;
+package emlakcepte.model.enums;
 
 public enum RealtyType {
 	

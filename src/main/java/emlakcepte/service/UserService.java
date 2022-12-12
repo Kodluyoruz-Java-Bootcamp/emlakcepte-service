@@ -1,4 +1,4 @@
-package com.emlakcepte.service;
+package emlakcepte.service;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.emlakcepte.model.User;
-import com.emlakcepte.repository.UserRepository;
+import emlakcepte.model.User;
+import emlakcepte.repository.UserRepository;
 
 //@Service // kapalı çünkü @Bean olarak tanımladık fakat bu da doğru bir yöntem
 public class UserService {

@@ -1,25 +1,31 @@
-package com.emlakcepte.service;
+package emlakcepte.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.emlakcepte.model.Realty;
-import com.emlakcepte.model.User;
-import com.emlakcepte.model.enums.RealtyType;
-import com.emlakcepte.model.enums.UserType;
-import com.emlakcepte.repository.RealtyRepository;
+import emlakcepte.client.Banner;
+import emlakcepte.client.BannerServiceClient;
+import emlakcepte.model.Realty;
+import emlakcepte.model.User;
+import emlakcepte.model.enums.RealtyType;
+import emlakcepte.model.enums.UserType;
+import emlakcepte.repository.RealtyRepository;
 
 @Service
 public class RealtyService {
 
-	private RealtyRepository realtyDao = new RealtyRepository();
+	@Autowired
+	private RealtyRepository realtyDao;
 
 	//@Autowired // injection
-	private UserService userService;
+	//private UserService userService;
 
-	public void createRealty(Realty realty) {
+	@Autowired
+	private BannerServiceClient bannerServiceClient;
+
+	public void create(Realty realty) {
 
 		// userService.printAllUser();
 
@@ -30,7 +36,19 @@ public class RealtyService {
 		}
 
 		realtyDao.saveRealty(realty);
-		System.out.println("createRealty :: " + realty.getTitle());
+		System.out.println("createRealty :: " + realty);
+
+		// TODO :: banner-service çağır ve banner siparişi ver
+
+		Banner bannerRequest = new Banner(String.valueOf(realty.getNo()), 1, "123123", "");
+		
+		Banner bannerResponse = bannerServiceClient.create(bannerRequest);
+
+		if (bannerResponse.getAdet() > 1) {
+			System.out.println("hata verilsin");
+		}
+		
+		
 	}
 
 	public List<Realty> getAll() {

@@ -1,4 +1,4 @@
-package com.emlakcepte.controller;
+package emlakcepte.controller;
 
 import java.util.List;
 
@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import com.emlakcepte.model.User;
-import com.emlakcepte.service.UserService;
+import emlakcepte.model.User;
+import emlakcepte.service.UserService;
 
 @RestController
 @RequestMapping(value = "/users")

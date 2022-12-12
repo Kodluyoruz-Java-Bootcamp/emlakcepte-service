@@ -1,9 +1,9 @@
-package com.emlakcepte.model;
+package emlakcepte.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.emlakcepte.model.enums.UserType;
+import emlakcepte.model.enums.UserType;
 
 public class User {
 	

@@ -1,8 +1,8 @@
-package com.emlakcepte.model;
+package emlakcepte.model;
 
 import java.time.LocalDateTime;
 
-import com.emlakcepte.model.enums.RealtyType;
+import emlakcepte.model.enums.RealtyType;
 
 public class Realty {
 	

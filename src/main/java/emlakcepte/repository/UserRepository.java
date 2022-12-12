@@ -1,4 +1,4 @@
-package com.emlakcepte.repository;
+package emlakcepte.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import com.emlakcepte.model.User;
+import emlakcepte.model.User;
 
 @Component
 public class UserRepository {

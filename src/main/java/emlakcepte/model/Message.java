@@ -1,4 +1,4 @@
-package com.emlakcepte.model;
+package emlakcepte.model;
 
 public class Message {
 	
