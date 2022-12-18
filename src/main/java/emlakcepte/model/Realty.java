@@ -2,50 +2,91 @@ package emlakcepte.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import emlakcepte.model.enums.RealtyType;
 
+@Entity
+@Table(name = "realty")
 public class Realty {
-	
-	private Long no;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer id;
+	@Column(name = "relaty_no", nullable = false)
+	private Integer no;
+	@Column(name = "title", nullable = false, length = 200)
 	private String title;
-	private LocalDateTime publishedDate;
+	@Column(name = "create_date")
+	private LocalDateTime createDate;
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private User user;
+	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
 	private RealtyType status;
+	@Column(name = "province")
 	private String province;
-	
+
 	public Realty() {
 		super();
 	}
-	
-	public Realty(Long no, String title, LocalDateTime publishedDate, User user, RealtyType status) {
+
+	public Realty(Integer no, String title, LocalDateTime createDate, RealtyType status) {
 		super();
 		this.no = no;
 		this.title = title;
-		this.publishedDate = publishedDate;
-		this.user = user;
+		this.createDate = createDate;
 		this.status = status;
 	}
-	public Long getNo() {
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getNo() {
 		return no;
 	}
-	public void setNo(Long no) {
+
+	public void setNo(Integer no) {
 		this.no = no;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public LocalDateTime getPublishedDate() {
-		return publishedDate;
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
 	}
-	public void setPublishedDate(LocalDateTime publishedDate) {
-		this.publishedDate = publishedDate;
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -68,9 +109,8 @@ public class Realty {
 
 	@Override
 	public String toString() {
-		return "Realty [no=" + no + ", title=" + title + ", publishedDate=" + publishedDate + ", user=" + user
-				+ ", status=" + getStatus() + ", province=" + province + "]";
+		return "Realty [no=" + no + ", title=" + title + ", createDate=" + createDate + ", status=" + getStatus()
+				+ ", province=" + province + "]";
 	}
-
 
 }

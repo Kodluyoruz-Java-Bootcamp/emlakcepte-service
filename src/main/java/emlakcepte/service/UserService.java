@@ -1,69 +1,75 @@
 package emlakcepte.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
+import emlakcepte.configuration.RabbitMQConfiguration;
 import emlakcepte.model.User;
 import emlakcepte.repository.UserRepository;
+import emlakcepte.request.UserRequest;
 
 //@Service // kapalı çünkü @Bean olarak tanımladık fakat bu da doğru bir yöntem
 public class UserService {
 
+	// @Autowired
+	// private AmqpTemplate rabbitTemplate;
+
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
+
+	@Autowired
+	private RabbitMQConfiguration rabbitMQConfiguration;
+
 	@Autowired
 	private UserRepository userRepository;
 
-	// Singleton Pattern
-	/*
-	 * private static UserService userService = new UserService();
-	 * 
-	 * private UserService() {
-	 * 
-	 * }
-	 * 
-	 * public static UserService getDifferentInstance() { return new UserService();
-	 * }
-	 * 
-	 * public static UserService getSameInstance() { return userService; }
-	 */
-	public void createUser(User user) {
-		// UserDao userDao = new UserDao(); tekrar tekrar oluşturmamıza gerek yok
-		System.out.println("ben bir userDao objesiyim:" + userRepository.toString());
-
-		if (user.getPassword().length() < 5) {
-			System.out.println("Şifre en az 5 karakterli olmalı");
-		}
-		userRepository.createUser(user);
-		System.out.println("[createUser] user oluşturuldu :: " + user);
+	public User createUser(UserRequest userRequest) {
+		User savedUser = userRepository.save(convert(userRequest));
+		System.out.println("[createUser] user oluşturuldu :: " + savedUser);
+		rabbitTemplate.convertAndSend(rabbitMQConfiguration.getQueueName(), userRequest);
+		return savedUser;
 	}
 
-	public List<User> getAllUser() {
-		// UserDao userDao = new UserDao();
-		return userRepository.findAllUsers();
+	private User convert(UserRequest userRequest) {
+		User user = new User();
+		user.setEmail(userRequest.getEmail());
+		user.setName(userRequest.getName());
+		user.setPassword(userRequest.getPassword());
+		user.setCreateDate(LocalDateTime.now());
+		user.setType(userRequest.getType());
+		return user;
 	}
 
-	public void printAllUser() {
-
-		getAllUser().forEach(user -> System.out.println(user.getName()));
-
+	public List<User> getAll() {
+		return userRepository.findAll();
 	}
 
 	public void updatePassword(User user, String newPassword) {
 		// önce hangi user bul ve passwordü update et.
 	}
 
-	public User getByEmail(String email) {
+	public User getByEmailUntiPattern(String email) {
 
 		//// @formatter:off
-		return userRepository.findAllUsers()
+		return userRepository.findAll()
 				.stream()
-				.filter(user -> user.getMail().equals(email))
+				.filter(user -> user.getEmail().equals(email))
 				.findFirst()
 				.get();
 		// @formatter:on
 
+	}
+
+	public User getByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
+	public Optional<User> getById(Integer userId) {
+		return userRepository.findById(userId);
 	}
 
 }

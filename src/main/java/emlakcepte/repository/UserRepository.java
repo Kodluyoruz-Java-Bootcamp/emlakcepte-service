@@ -1,24 +1,15 @@
 package emlakcepte.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import emlakcepte.model.User;
 
-@Component
-public class UserRepository {
-	
-	private static List<User> userList = new ArrayList<>();
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
 
-	public void createUser(User user) {	
-		userList.add(user);
-	}
-	
-	public List<User> findAllUsers() {	
-		return userList;
-	}
+	// select * from Users where email = ?
+	// @Query(value = "sql",nativeQuery = true) native sql scripti yazmanız gerekirse
+	User findByEmail(String email);
 
 }

@@ -1,23 +1,16 @@
 package emlakcepte.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import emlakcepte.model.Realty;
+import emlakcepte.model.enums.RealtyType;
 
-@Repository
-public class RealtyRepository {
+public interface RealtyRepository extends JpaRepository<Realty, Integer> {
 
-	private static List<Realty> realtyList = new ArrayList<>();
+	List<Realty> findAllByUserId(int id);
 
-	public void saveRealty(Realty realty) {
-		realtyList.add(realty);
-	}
-
-	public List<Realty> findAll() {
-		return realtyList;
-	}
+	List<Realty> findAllByStatus(RealtyType active);
 
 }

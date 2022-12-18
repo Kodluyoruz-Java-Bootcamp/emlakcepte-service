@@ -3,85 +3,120 @@ package emlakcepte.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import emlakcepte.model.enums.UserType;
 
+@Entity
+@Table(name = "users")
 public class User {
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "id")
+	private Integer id;
+	@Column(name = "name")
 	private String name;
-	private String mail;
+	@Column(name = "email")
+	private String email;
+	@Column(name = "password")
 	private String password;
+	@Column(name = "type")
+	@Enumerated(EnumType.STRING)
 	private UserType type;
-	private List<Realty> realtyList;	
-	private List<Realty>  favoriteRealtyList;
-	private List<Message> messages;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Realty> realtyList;
+
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime createDate;
-	
 
 	public User() {
 		super();
 	}
-	public User(String name, String mail, String password, UserType type, List<Realty> realtyList) {
+
+	public User(String name, String email, String password, UserType type) {
 		super();
 		this.name = name;
-		this.mail = mail;
+		this.email = email;
 		this.password = password;
 		this.type = type;
-		this.realtyList = realtyList;
+
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getMail() {
-		return mail;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setMail(String mail) {
-		this.mail = mail;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public UserType getType() {
 		return type;
 	}
+
 	public void setType(UserType type) {
 		this.type = type;
 	}
+
 	public List<Realty> getRealtyList() {
 		return realtyList;
 	}
+
 	public void setRealtyList(List<Realty> realtyList) {
 		this.realtyList = realtyList;
 	}
-	public List<Realty> getFavoriteRealtyList() {
-		return favoriteRealtyList;
-	}
-	public void setFavoriteRealtyList(List<Realty> favoriteRealtyList) {
-		this.favoriteRealtyList = favoriteRealtyList;
-	}
-	public List<Message> getMessages() {
-		return messages;
-	}
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
+
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
+
 	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", mail=" + mail + ", password=" + password + ", type=" + type +   "createDate="
+		return "User [name=" + name + ", email=" + email + ", password=" + password + ", type=" + type + "createDate="
 				+ createDate + "]";
 	}
-
 
 }
