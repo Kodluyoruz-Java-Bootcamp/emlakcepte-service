@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "f3cdfdf4-02e0-41cb-9afa-1fca70fa714d",
+		"name": "emlakcepte",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "339608"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/realtyes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"no\": 125,\n    \"title\":\"kurumsala kiralık\",\n    \"province\" :\"izmir\",\n    \"userId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/realtyes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realtyes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/realtyes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/realtyes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realtyes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8081/banners",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/banners",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"banners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8081/banners",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanNo\" : \"123\",\n    \"adet\" : 1,\n    \"telNo1\": \"5395393939\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/banners",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"banners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/users/cemdrman@gmail.com",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/users/hüseyin@gmail.com",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"hüseyin@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"hüseyin\",\n    \"email\":\"hüseyin@gmail.com\",\n    \"password\": \"12345\",\n    \"type\": \"INDIVIDUAL\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/realtyes/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/realtyes/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realtyes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/realtyes/status/active",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/realtyes/status/active",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realtyes",
+						"status",
+						"active"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
