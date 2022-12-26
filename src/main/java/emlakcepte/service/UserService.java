@@ -1,22 +1,24 @@
 package emlakcepte.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import emlakcepte.configuration.RabbitMQConfiguration;
+import emlakcepte.controller.UserController;
+import emlakcepte.converter.UserConverter;
 import emlakcepte.model.User;
 import emlakcepte.repository.UserRepository;
 import emlakcepte.request.UserRequest;
+import emlakcepte.request.UserUpdateRequest;
+import emlakcepte.response.UserResponse;
 
 //@Service // kapalı çünkü @Bean olarak tanımladık fakat bu da doğru bir yöntem
 public class UserService {
-
-	// @Autowired
-	// private AmqpTemplate rabbitTemplate;
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -27,25 +29,22 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User createUser(UserRequest userRequest) {
-		User savedUser = userRepository.save(convert(userRequest));
-		System.out.println("[createUser] user oluşturuldu :: " + savedUser);
+	@Autowired
+	private UserConverter converter;
+
+	public UserResponse createUser(UserRequest userRequest) {
+		User savedUser = userRepository.save(converter.convert(userRequest));
+		Logger logger = Logger.getLogger(UserController.class.getName());
+		logger.log(Level.INFO, "[createUser] - user created: {0}", savedUser.getId());
 		rabbitTemplate.convertAndSend(rabbitMQConfiguration.getQueueName(), userRequest);
-		return savedUser;
+
+		logger.log(Level.WARNING, "[createUser] - userRequest: {0}, sent to : {1}",
+				new Object[] { userRequest.getEmail(), rabbitMQConfiguration.getQueueName() });
+		return converter.convert(savedUser);
 	}
 
-	private User convert(UserRequest userRequest) {
-		User user = new User();
-		user.setEmail(userRequest.getEmail());
-		user.setName(userRequest.getName());
-		user.setPassword(userRequest.getPassword());
-		user.setCreateDate(LocalDateTime.now());
-		user.setType(userRequest.getType());
-		return user;
-	}
-
-	public List<User> getAll() {
-		return userRepository.findAll();
+	public List<UserResponse> getAll() {
+		return converter.convert(userRepository.findAll());
 	}
 
 	public void updatePassword(User user, String newPassword) {
@@ -64,12 +63,17 @@ public class UserService {
 
 	}
 
-	public User getByEmail(String email) {
-		return userRepository.findByEmail(email);
+	public UserResponse getByEmail(String email) {
+		return converter.convert(userRepository.findByEmail(email));
 	}
 
 	public Optional<User> getById(Integer userId) {
 		return userRepository.findById(userId);
+	}
+
+	public UserResponse update(UserUpdateRequest userUpdateRequest) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

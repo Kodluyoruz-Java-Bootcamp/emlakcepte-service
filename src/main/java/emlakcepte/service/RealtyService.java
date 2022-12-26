@@ -3,12 +3,15 @@ package emlakcepte.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import emlakcepte.client.Banner;
 import emlakcepte.client.BannerServiceClient;
+import emlakcepte.controller.UserController;
 import emlakcepte.model.Realty;
 import emlakcepte.model.User;
 import emlakcepte.model.enums.RealtyType;
@@ -18,6 +21,8 @@ import emlakcepte.request.RealtyRequest;
 
 @Service
 public class RealtyService {
+
+	private static final int MAX_INDIVICUAL_REALTY_SIZE = 5;
 
 	@Autowired
 	private UserService userService;
@@ -29,18 +34,32 @@ public class RealtyService {
 	private BannerServiceClient bannerServiceClient;
 
 	public Realty create(RealtyRequest realtyRequest) {
+		Logger logger = Logger.getLogger(UserController.class.getName());
+
+		Optional<User> foundUser = userService.getById(realtyRequest.getUserId());
+
+		if (UserType.INDIVIDUAL.equals(foundUser.get().getType())) { // en fazla 5 ilan girebilir.
+
+			List<Realty> realtyList = realtyRepository.findAllByUserId(foundUser.get().getId());
+
+			if (MAX_INDIVICUAL_REALTY_SIZE == realtyList.size()) {
+				// TODO exception fırlatılabilir.
+				logger.log(Level.WARNING, "Bireysel kullanıcı en fazla 5 ilan girebilir. userID : {0}",
+						foundUser.get().getId());
+			}
+
+		}
+
 		/*
+		 * NPE fırlatır
 		 * 
-		 * if (UserType.INDIVIDUAL.equals(realty.getUser().getType())) { // en fazla 5
+		 * if (foundUser.get().getType().equals(UserType.INDIVIDUAL)) { // en fazla 5
 		 * ilan girebilir.
-		 * 
 		 * System.out.println("Bireysel kullanıclar en fazla 5 ilan girebilir."); }
 		 */
 
 		// User user = userService.getByEmail("test@gmail.com");
 		// realty.setUser(user);
-
-		Optional<User> foundUser = userService.getById(realtyRequest.getUserId());
 
 		if (!foundUser.isPresent()) {
 
@@ -101,7 +120,7 @@ public class RealtyService {
 				.filter(realty -> RealtyType.ACTIVE.equals(realty.getStatus())).toList();
 	}
 
-	public List<Realty> getAllById(int id) {	
+	public List<Realty> getAllById(int id) {
 		return realtyRepository.findAllByUserId(id);
 	}
 

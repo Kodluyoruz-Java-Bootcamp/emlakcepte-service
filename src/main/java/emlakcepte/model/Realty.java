@@ -24,7 +24,7 @@ public class Realty {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer id;
-	@Column(name = "relaty_no", nullable = false)
+	@Column(name = "realty_no", nullable = false)
 	private Integer no;
 	@Column(name = "title", nullable = false, length = 200)
 	private String title;
