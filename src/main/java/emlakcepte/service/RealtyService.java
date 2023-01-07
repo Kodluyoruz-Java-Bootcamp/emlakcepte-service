@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import emlakcepte.client.Banner;
@@ -126,6 +127,16 @@ public class RealtyService {
 
 	public List<Realty> getAllActiveRealtyes() {
 		return realtyRepository.findAllByStatus(RealtyType.ACTIVE);
+	}
+
+	@Cacheable(value = "provinceCount", key = "#province")
+	public Long getCountByProvince(String province) {
+		Logger logger = Logger.getLogger(RealtyService.class.getName());
+		logger.log(Level.INFO, "province: {0}", province);
+
+		long count = realtyRepository.countByProvince(province);
+		logger.log(Level.INFO, "province count from db: {0}", count);
+		return count;
 	}
 
 }

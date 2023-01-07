@@ -47,5 +47,11 @@ public class RealtyController {
 		List<Realty> realtyes = realtyService.getAllActiveRealtyes();
 		return ResponseEntity.ok(realtyes);
 	}
+	
+	@GetMapping(value = "/provinces/{province}")
+	public ResponseEntity<Long> getCountByProvince(@PathVariable String province) {
+		Long realtyCount = realtyService.getCountByProvince(province);
+		return ResponseEntity.ok(realtyCount);
+	}
 
 }

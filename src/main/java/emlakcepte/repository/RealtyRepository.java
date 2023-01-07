@@ -13,4 +13,6 @@ public interface RealtyRepository extends JpaRepository<Realty, Integer> {
 
 	List<Realty> findAllByStatus(RealtyType active);
 
+	long countByProvince(String province);
+
 }
