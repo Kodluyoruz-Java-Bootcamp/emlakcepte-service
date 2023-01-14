@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import emlakcepte.request.LoginRequest;
 import emlakcepte.request.UserRequest;
 import emlakcepte.request.UserUpdateRequest;
 import emlakcepte.response.UserResponse;
@@ -54,6 +55,11 @@ public class UserController {
 	public ResponseEntity<UserResponse> update(@RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse user = userService.update(userUpdateRequest);
 		return ResponseEntity.ok(user);
+	}
+
+	@PostMapping(value = "/login")
+	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+		return ResponseEntity.ok(userService.login(loginRequest));
 	}
 
 	// GET /users/{id} -> /users/1

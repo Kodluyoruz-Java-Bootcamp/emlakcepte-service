@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import emlakcepte.client.Banner;
 import emlakcepte.client.BannerServiceClient;
 import emlakcepte.controller.UserController;
+import emlakcepte.exception.EmlakCepteException;
+import emlakcepte.exception.UserNotFoundException;
 import emlakcepte.model.Realty;
 import emlakcepte.model.User;
 import emlakcepte.model.enums.RealtyType;
@@ -34,22 +36,14 @@ public class RealtyService {
 	@Autowired
 	private BannerServiceClient bannerServiceClient;
 
+	Logger logger = Logger.getLogger(UserController.class.getName());
+
 	public Realty create(RealtyRequest realtyRequest) {
-		Logger logger = Logger.getLogger(UserController.class.getName());
 
-		Optional<User> foundUser = userService.getById(realtyRequest.getUserId());
+		User foundUser = userService.getById(realtyRequest.getUserId())
+				.orElseThrow(() -> new UserNotFoundException("user bulunamadı"));
 
-		if (UserType.INDIVIDUAL.equals(foundUser.get().getType())) { // en fazla 5 ilan girebilir.
-
-			List<Realty> realtyList = realtyRepository.findAllByUserId(foundUser.get().getId());
-
-			if (MAX_INDIVICUAL_REALTY_SIZE == realtyList.size()) {
-				// TODO exception fırlatılabilir.
-				logger.log(Level.WARNING, "Bireysel kullanıcı en fazla 5 ilan girebilir. userID : {0}",
-						foundUser.get().getId());
-			}
-
-		}
+		validateIndividualRealtySize(foundUser);
 
 		/*
 		 * NPE fırlatır
@@ -62,15 +56,8 @@ public class RealtyService {
 		// User user = userService.getByEmail("test@gmail.com");
 		// realty.setUser(user);
 
-		if (!foundUser.isPresent()) {
-
-			// TODO hata fırlat
-			System.out.println("user bulunamadı");
-
-		}
-
 		Realty realty = convert(realtyRequest);
-		realty.setUser(foundUser.get());
+		realty.setUser(foundUser);
 		Realty savedRealty = realtyRepository.save(realty);
 
 		System.out.println("createRealty :: " + realty);
@@ -88,6 +75,21 @@ public class RealtyService {
 
 		return savedRealty;
 
+	}
+
+	private void validateIndividualRealtySize(User foundUser) {
+		if (UserType.INDIVIDUAL.equals(foundUser.getType())) { // en fazla 5 ilan girebilir.
+
+			List<Realty> realtyList = realtyRepository.findAllByUserId(foundUser.getId());
+
+			if (MAX_INDIVICUAL_REALTY_SIZE == realtyList.size()) {
+
+				logger.log(Level.WARNING, "Bireysel kullanıcı en fazla 5 ilan girebilir. userID : {0}",
+						foundUser.getId());
+
+				throw new EmlakCepteException("indivual.user.realty.max.size");
+			}
+		}
 	}
 
 	private Realty convert(RealtyRequest realtyRequest) {

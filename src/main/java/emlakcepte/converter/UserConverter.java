@@ -2,7 +2,6 @@ package emlakcepte.converter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -23,11 +22,11 @@ public class UserConverter {
 		return response;
 	}
 
-	public User convert(UserRequest userRequest) {
+	public User convert(UserRequest userRequest, String hash) {
 		User user = new User();
 		user.setEmail(userRequest.getEmail());
 		user.setName(userRequest.getName());
-		user.setPassword(userRequest.getPassword());
+		user.setPassword(hash);
 		user.setCreateDate(LocalDateTime.now());
 		user.setType(userRequest.getType());
 		return user;
