@@ -49,8 +49,8 @@ public class UserService {
 		User savedUser = userRepository.save(converter.convert(userRequest, hash));
 
 		logger.log(Level.INFO, "[createUser] - user created: {0}", savedUser.getId());
-		// rabbitTemplate.convertAndSend(rabbitMQConfiguration.getQueueName(),
-		// userRequest);
+		
+		rabbitTemplate.convertAndSend(rabbitMQConfiguration.getQueueName(), userRequest);
 
 		logger.log(Level.WARNING, "[createUser] - userRequest: {0}, sent to : {1}",
 				new Object[] { userRequest.getEmail(), rabbitMQConfiguration.getQueueName() });

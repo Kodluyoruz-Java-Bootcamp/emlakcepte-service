@@ -9,6 +9,18 @@ public class UserResponse {
 	private String email;
 	private UserType type;
 
+	public UserResponse() {
+		super();
+	}
+
+	public UserResponse(Integer id, String name, String email, UserType type) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.type = type;
+	}
+
 	public Integer getId() {
 		return id;
 	}

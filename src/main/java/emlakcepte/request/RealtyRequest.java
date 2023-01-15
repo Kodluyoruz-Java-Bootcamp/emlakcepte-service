@@ -7,6 +7,18 @@ public class RealtyRequest {
 	private String province;
 	private Integer userId;
 
+	public RealtyRequest() {
+		super();
+	}
+
+	public RealtyRequest(Integer no, String title, String province, Integer userId) {
+		super();
+		this.no = no;
+		this.title = title;
+		this.province = province;
+		this.userId = userId;
+	}
+
 	public Integer getNo() {
 		return no;
 	}

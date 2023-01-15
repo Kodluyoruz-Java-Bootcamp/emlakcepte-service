@@ -9,6 +9,18 @@ public class UserRequest {
 	private String password;
 	private UserType type;
 
+	public UserRequest() {
+		super();
+	}
+
+	public UserRequest(String name, String email, String password, UserType type) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.type = type;
+	}
+
 	public String getName() {
 		return name;
 	}
