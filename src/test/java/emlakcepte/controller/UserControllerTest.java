@@ -25,7 +25,6 @@ import emlakcepte.request.UserRequest;
 import emlakcepte.response.UserResponse;
 import emlakcepte.service.UserService;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 

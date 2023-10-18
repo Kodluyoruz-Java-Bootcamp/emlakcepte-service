@@ -47,9 +47,20 @@ public class User {
 	public User() {
 		super();
 	}
+	
 
 	public User(String name, String email, String password, UserType type) {
 		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.type = type;
+
+	}
+
+	public User(Integer id, String name, String email, String password, UserType type) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
