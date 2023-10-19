@@ -79,7 +79,7 @@ public class RealtyService {
 		Realty realty = new Realty();
 		realty.setNo(realtyRequest.getNo());
 		realty.setCreateDate(LocalDateTime.now());
-		realty.setStatus(RealtyType.PASSIVE);
+		realty.setStatus(RealtyType.ACTIVE);
 		realty.setTitle(realtyRequest.getTitle());
 		realty.setProvince(realtyRequest.getProvince());
 		realty.setUser(foundUser);

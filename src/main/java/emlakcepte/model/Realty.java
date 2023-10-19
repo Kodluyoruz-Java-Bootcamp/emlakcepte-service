@@ -2,12 +2,10 @@ package emlakcepte.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,6 +39,15 @@ public class Realty {
 
 	public Realty() {
 		super();
+	}
+
+	public Realty(Integer no, String title, LocalDateTime createDate, String province, RealtyType status) {
+		super();
+		this.no = no;
+		this.title = title;
+		this.createDate = createDate;
+		this.province = province;
+		this.status = status;
 	}
 
 	public Realty(Integer no, String title, LocalDateTime createDate, RealtyType status) {

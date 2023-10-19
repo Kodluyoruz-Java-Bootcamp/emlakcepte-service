@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -46,6 +48,9 @@ class RealtyServiceTest {
 
 	@Mock
 	private BannerServiceClient bannerServiceClient;
+
+	@Captor
+	private ArgumentCaptor<Realty> realtyCaptor;
 
 	@Test
 	void it_should_throw_user_found_exception_when_user_is_null() {
@@ -134,6 +139,8 @@ class RealtyServiceTest {
 
 		// given
 
+		ArgumentCaptor<Realty> capture = ArgumentCaptor.forClass(Realty.class);
+
 		Optional<User> user = getUser(1, UserType.INDIVIDUAL);
 
 		Mockito.when(userService.getById(1)).thenReturn(user);
@@ -159,7 +166,7 @@ class RealtyServiceTest {
 
 		verify(realtyRepository, times(1)).findAllByUserId(1);
 
-		Mockito.verify(realtyRepository, times(1)).save(Mockito.any(Realty.class));
+		verify(realtyRepository, times(1)).save(capture.capture());
 
 		verifyNoMoreInteractions(realtyRepository);
 
@@ -167,15 +174,17 @@ class RealtyServiceTest {
 
 		verifyNoMoreInteractions(bannerServiceClient);
 
+		Realty capturedRealty = capture.getValue();
+
 		assertThat(responseRealty).isNotNull();
 
-		assertThat(responseRealty.getId()).isEqualTo(realty.getId());
+		assertThat(responseRealty.getId()).isEqualTo(capturedRealty.getId());
 
-		assertThat(responseRealty.getTitle()).isEqualTo(realty.getTitle());
+		assertThat(responseRealty.getTitle()).isEqualTo(capturedRealty.getTitle());
 
-		assertThat(responseRealty.getProvince()).isEqualTo(realty.getProvince());
+		assertThat(responseRealty.getProvince()).isEqualTo(capturedRealty.getProvince());
 
-		assertThat(responseRealty.getStatus()).isEqualTo(realty.getStatus());
+		assertThat(responseRealty.getStatus()).isEqualTo(capturedRealty.getStatus());
 
 	}
 
@@ -194,7 +203,7 @@ class RealtyServiceTest {
 	}
 
 	private Realty getRealty(int id) {
-		return new Realty(id, "test ilan", LocalDateTime.now(), RealtyType.ACTIVE);
+		return new Realty(id, "test ilan", LocalDateTime.now(), "şehir", RealtyType.ACTIVE);
 	}
 
 	private RealtyRequest getRealtyRequest(int id) {
